@@ -36,13 +36,13 @@ class PurchaseOrder(models.Model):
             attachments = self.env['ir.attachment'].create([{
                     'name': F"Purchase Order - {filename}",
                     'datas': base64.b64encode(purchase_order_report[0]),
-                    'res_model': 'stock.picking',
+                    'res_model': 'purchase.order',
                     'res_id': self.id,
                     'type': 'binary',
                 },{
                     'name': F"DeliverySlip_{self.origin}",
                     'datas': base64.b64encode(dropship_report[0]),
-                    'res_model': 'stock.picking',
+                    'res_model': 'purchase.order',
                     'res_id': self.id,
                     'type': 'binary',
                 }])
