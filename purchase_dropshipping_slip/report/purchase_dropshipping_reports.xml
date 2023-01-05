@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_purchase_dropshipping_order" model="ir.actions.report">
+            <field name="name">Dropshipping Delivery Slip</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">purchase_dropshipping_slip.report_purchase_dropshipping_order</field>
+            <field name="report_file">purchase_dropshipping_slip.report_purchase_dropshipping_order</field>
+            <field name="print_report_name">('DeliverSlip_%s' % (object.origin))</field>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

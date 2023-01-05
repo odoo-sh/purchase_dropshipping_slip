@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_purchase_dropshipping_order_document">
+    <t t-call="web.external_layout">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+        <t t-set="sale_order" t-value="o._get_sale_orders()"/>
+        <div>
+            <div t-field="sale_order.partner_id"  t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}' />
+            <div t-if="sale_order.partner_id.ref">
+                <Strong>Acct No. </Strong><t t-esc="sale_order.partner_id.ref"/>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col-6">
+                <t t-set="partner_invoice" t-value="sale_order.partner_invoice_id or False"/>
+                <strong t-if="partner_invoice"><b>Invoicing Address:</b></strong>
+                <div t-if="partner_invoice.street or partner_invoice.street2 or partner_invoice.city or partner_invoice.state_id or partner_invoice.zip or partner_invoice.country_id">
+                    <div t-esc="partner_invoice"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+                <div t-elif="partner_invoice.parent_id">
+                    <div t-esc="partner_invoice.parent_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+            </div>
+            <div class="col-6">
+                <t t-set="partner_shipping" t-value="sale_order.partner_shipping_id or False"/>
+                <strong t-if="partner_shipping"><b>Shipping Address:</b></strong>
+                <div t-if="partner_shipping.street or partner_shipping.street2 or partner_shipping.city or partner_shipping.state_id or partner_shipping.zip or partner_shipping.country_id">
+                <div t-esc="partner_shipping"
+                t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+                <div t-elif="partner_shipping.parent_id">
+                    <div t-esc="partner_shipping.parent_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                </div>
+            </div>
+        </div>
+        <br/><br/>
+        <div class="page">
+            <div class="row mt32 mb32">
+                <div t-if="o.origin" class="col-auto" name="div_origin">
+                    <strong>Order:</strong>
+                    <p t-field="o.origin"/>
+                </div>
+                 <div t-if="sale_order.shipping_term" class="col-auto" name="div_shipping_term">
+                    <strong>Shipping Term:</strong>
+                    <p t-field="sale_order.shipping_term"/>
+                </div>
+                <div t-if="o.date_planned" class="col-auto" name="div_sched_date">
+                    <strong>Shipping Date:</strong>
+                    <p t-field="o.date_planned"/>
+                </div>
+                <div t-if="sale_order.carrier_id" class="col-auto" name="div_carrier">
+                    <strong>Carrier:</strong>
+                    <p t-field="sale_order.carrier_id"/>
+                </div>
+                <div t-if="sale_order.client_order_ref" class="col-auto" name="div_client_order_ref">
+                    <strong>Customer PO Number:</strong>
+                    <p t-field="sale_order.client_order_ref"/>
+                </div>
+            </div>
+            <table class="table table-sm" name="purchase_order_line_table">
+                <thead>
+                    <tr>
+                        <th name="th_sm_product"><strong>Product</strong></th>
+                        <th name="th_sm_quantity"><strong>Delivered</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="lines" t-value="o.order_line"/>
+                    <tr t-foreach="lines" t-as="line">
+                        <td>
+                            <span t-field="line.product_id"/><br/>
+                            <span t-field="line.name"/>
+                        </td>
+                        <td>
+                            <span t-field="line.product_qty"/>
+                            <span t-field="line.product_uom"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</template>
+
+<template id="report_purchase_dropshipping_order">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="purchase_dropshipping_slip.report_purchase_dropshipping_order_document" t-lang="o.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>
