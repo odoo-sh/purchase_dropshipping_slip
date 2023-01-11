@@ -47,9 +47,13 @@
                     <strong>Shipping Term:</strong>
                     <p t-field="sale_order.shipping_term"/>
                 </div>
-                <div t-if="sale_order.carrier_account" class="col-auto" name="div_carrier_account">
+                <div t-if="sale_order.shipping_term in ('collect','thirdparty') and sale_order.carrier_account" class="col-auto" name="div_carrier_account">
                     <strong>Carrier Account:</strong>
                     <p t-field="sale_order.carrier_account"/>
+                </div>
+                <div t-if="sale_order.shipping_term  == 'thirdparty' and sale_order.third_party_billing_id" class="col-auto" name="div_third_party_billing">
+                    <strong>Third Party Billing:</strong>
+                    <span t-field="sale_order.third_party_billing_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}'/>
                 </div>
                 <div t-if="sale_order.carrier_id" class="col-auto" name="div_carrier">
                     <strong>Carrier:</strong>
