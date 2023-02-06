@@ -20,7 +20,4 @@
         'data/mail_template_data.xml',
         'report/purchase_dropshipping_templates.xml',
     ],
-    "cloc_exclude": [
-        "**/*", # can be used to ignore an entire module.
-    ],
 }
